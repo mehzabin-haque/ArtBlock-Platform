@@ -11,7 +11,7 @@ import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Burnable.sol";
 
 contract ABXToken is ERC20, ERC20Permit, Ownable {
-    constructor() ERC20("ArtBlockToken", "ABX") ERC20Permit("ArtBlockToken") Ownable() {
+    constructor() ERC20("ArtBlockToken", "ABX") ERC20Permit("ArtBlockToken") Ownable(msg.sender) {
         _mint(msg.sender, 100000000000000000000 * 10 ** decimals());
     }
 }
@@ -23,7 +23,7 @@ contract ArtBlockPlatform is Ownable {
     // 1 Ether = 10000 ABX
     // Cost of creating a community = 100 ABX
 
-    constructor(address _ntt) Ownable() {
+    constructor(address _ntt) Ownable(msg.sender) {
         ABXToken _abxToken = new ABXToken();
         abxToken = IERC20(address(_abxToken));
         abxToken.approve(address(this), abxToken.totalSupply());
@@ -129,6 +129,7 @@ contract Community {
         uint price;
         address artist;
         uint nftTokenId;
+        uint royalty;
     }
 
     Artwork[] public artworks;
@@ -272,6 +273,50 @@ contract Community {
         exclusiveArtIndex[id] = auction.artwork;
         artNFT.burn(auction.artwork.nftTokenId);
     }
+
+    struct Sellpost {
+        Artwork artwork;
+        uint price;
+        bool isResell;
+        uint id;
+        bool isSold;
+    }
+
+    uint public sellpostid;
+
+    Sellpost[] public sellposts;
+    
+    function createSellPost (uint _id, uint _royalty, uint _price) external {
+        Artwork storage _artwork = artInfo[_id];
+        _artwork.royalty = _royalty;
+        Sellpost storage _sellpost = sellposts.push();
+        _sellpost.id = sellpostid++;
+        _sellpost.price = _price;
+        _sellpost.artwork = _artwork;
+        _sellpost.isResell = (artNFT.ownerOf(_artwork.nftTokenId) == _artwork.artist)? false : true;
+    }
+
+    function getSellpost(uint256 _id)
+        public
+        view
+        returns (uint256)
+    {
+        for (uint256 i = 0; i < sellposts.length; i++) {
+            if (sellposts[i].id == _id) {
+                return i;
+            }
+        }
+        revert("Sellpost not found");
+    }
+
+    function buyFromMarket (uint _id) external {
+        Sellpost storage _sellpost = sellposts[getSellpost(_id)];
+        require(comToken.transferFrom(msg.sender, artNFT.ownerOf(_sellpost.artwork.nftTokenId), _sellpost.price - (_sellpost.price * _sellpost.artwork.royalty / 100 )), "Community Token transfer to owner failed!");
+        require(comToken.transferFrom(msg.sender, _sellpost.artwork.artist, _sellpost.price * _sellpost.artwork.royalty / 100 ), "Community Token transfer to artist failed!");
+
+        _sellpost.isSold = true;
+    }
+
 }
 
 interface IExclusiveArt is IERC721 {
@@ -291,7 +336,7 @@ contract CommunityToken is ERC20 {
 contract ArtNFT is ERC721, ERC721Burnable, Ownable {
     uint256 private _nextTokenId;
 
-    constructor() ERC721("ArtNFT", "ANFT") Ownable() {}
+    constructor() ERC721("ArtNFT", "ANFT") Ownable(msg.sender) {}
 
     function safeMint(address to) external onlyOwner returns (uint256) {
         uint256 tokenId = ++_nextTokenId;
