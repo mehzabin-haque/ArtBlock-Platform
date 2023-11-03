@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
 
-import "@openzeppelin/contracts@4.7.0/token/ERC721/ERC721.sol";
-import "@openzeppelin/contracts@4.7.0/token/ERC721/extensions/ERC721URIStorage.sol";
-import "@openzeppelin/contracts@4.7.0/access/Ownable.sol";
-import "@openzeppelin/contracts@4.7.0/utils/Counters.sol";
+import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/utils/Counters.sol";
 
 contract ExclusiveArt is ERC721, ERC721URIStorage, Ownable {
     using Counters for Counters.Counter;
@@ -43,9 +43,20 @@ contract ExclusiveArt is ERC721, ERC721URIStorage, Ownable {
     function _beforeTokenTransfer(
         address from,
         address to,
-        uint256 tokenId
+        uint256 tokenId,
+        uint256 batchSize
     ) internal virtual override {
         require(from == address(0), "Err: token transfer is BLOCKED");
-        super._beforeTokenTransfer(from, to, tokenId);
+        super._beforeTokenTransfer(from, to, tokenId, batchSize);
+    }
+
+    function supportsInterface(bytes4 interfaceId)
+        public
+        view
+        virtual
+        override(ERC721, ERC721URIStorage)
+        returns (bool)
+    {
+        return super.supportsInterface(interfaceId);
     }
 }
