@@ -18,13 +18,18 @@ contract ABXToken is ERC20, ERC20Permit, Ownable {
 
 contract ArtBlockPlatform is Ownable {
     IERC20 public immutable abxToken;
+    address public exclusiveNTT;
 
-    constructor() Ownable() {
+    // 1 Ether = 10000 ABX
+    // Cost of creating a community = 100 ABX
+
+    constructor(address _ntt) Ownable(msg.sender) {
         ABXToken _abxToken = new ABXToken();
         abxToken = IERC20(address(_abxToken));
         abxToken.approve(address(this), abxToken.totalSupply());
+        exclusiveNTT = _ntt;
     }
-
+    
     // Ether to ABX
     function getReserve() public view returns (uint256) {
         return IERC20(abxToken).balanceOf(address(this));
@@ -44,6 +49,42 @@ contract ArtBlockPlatform is Ownable {
     function withdrawEther() external onlyOwner {
         payable(owner()).transfer(address(this).balance);
     }
+
+    // Community creation
+    address[] public communities;
+    mapping(string => bool) public communityCreated;
+    uint256 communityIndexCount;
+
+    function createCommunity(
+        string memory title,
+        string memory token,
+        string memory syntax,
+        string memory description
+    ) external {
+        require(
+            communityCreated[syntax] == false,
+            "Syntax already exists"
+        );
+        require(
+            abxToken.transferFrom(msg.sender, address(this), 100)
+        );
+
+        communities.push(address(new Community(
+            msg.sender,
+            title,
+            token,
+            syntax,
+            description,
+            address(abxToken),
+            exclusiveNTT
+        )));
+
+        communityCreated[syntax] = true;
+    }
+}
+
+interface IExclusiveArt is IERC721 {
+    function safeMint(address to) external returns (uint);
 }
 
 contract CommunityToken is ERC20 {
