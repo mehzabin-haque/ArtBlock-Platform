@@ -12,15 +12,19 @@ const jsonObject = JSON.parse(jsonData);
 async function main() {
   // const lockedAmount = ethers.utils.parseEther("1");
 
-  const Greeter = await ethers.getContractFactory("ArtBlockPlatform");
-  // const greeting = await Greeting.deploy("Hello world", { value: lockedAmount });
-  const greeter = await Greeter.deploy();
+  // const ExclusiveArt = await ethers.getContractFactory("ExclusiveArt");
+  // const exclusiveArt = await ExclusiveArt.deploy();
+  
+  // await exclusiveArt.deployed();
+  // console.log("ExclusiveArt contract deployed to: ", exclusiveArt.address);
 
-  await greeter.deployed();
+  const ArtBlockPlatform = await ethers.getContractFactory("ArtBlockPlatform");
+  const artBlockPlatform = await ArtBlockPlatform.deploy("0x51c19A7118f19daacb72c940CDAd53Ae9fCD9046");
 
-  console.log("ArtBlock contract deployed to: ", greeter.address);
+  console.log("ArtBlockPlatform contract deployed to: ", artBlockPlatform.address);
 
-  jsonObject.contractAddress = greeter.address;
+  // jsonObject.exclusiveArtContractAddress = exclusiveArt.address;
+  jsonObject.artBlockPlatformContractAddress = artBlockPlatform.address;
   const updatedJsonData = JSON.stringify(jsonObject, null, 2);
   fs.writeFileSync(contractDetailsDataPath, updatedJsonData, 'utf8');
 }

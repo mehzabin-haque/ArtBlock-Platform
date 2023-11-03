@@ -1,3 +1,5 @@
 {
-  "ABXTokencontractAddress": "0x4fBf7b810bAc2030A178bEB252A37ABA6f118780"
+  "ABXTokencontractAddress": "0x4fBf7b810bAc2030A178bEB252A37ABA6f118780",
+  "exclusiveArtContractAddress": "0x51c19A7118f19daacb72c940CDAd53Ae9fCD9046",
+  "artBlockPlatformContractAddress": "0x1D385EAF24f5aB1fe20153E6eD52504363146F9F"
 }
