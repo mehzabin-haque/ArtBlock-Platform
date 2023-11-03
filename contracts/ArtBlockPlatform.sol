@@ -23,7 +23,7 @@ contract ArtBlockPlatform is Ownable {
     // 1 Ether = 10000 ABX
     // Cost of creating a community = 100 ABX
 
-    constructor(address _ntt) Ownable(msg.sender) {
+    constructor(address _ntt) Ownable() {
         ABXToken _abxToken = new ABXToken();
         abxToken = IERC20(address(_abxToken));
         abxToken.approve(address(this), abxToken.totalSupply());
@@ -92,7 +92,7 @@ contract Community {
     IERC20 public immutable abxToken;
     CommunityToken public immutable comToken;
     ArtNFT public artNFT;
-    address public immutable dex;
+    address public dex;
     IExclusiveArt public exclusiveNTT;
 
     constructor (
