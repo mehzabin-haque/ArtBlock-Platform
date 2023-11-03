@@ -11,7 +11,7 @@ import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Burnable.sol";
 
 contract ABXToken is ERC20, ERC20Permit, Ownable {
-    constructor() ERC20("ArtBlockToken", "ABX") ERC20Permit("ArtBlockToken") Ownable(msg.sender) {
+    constructor() ERC20("ArtBlockToken", "ABX") ERC20Permit("ArtBlockToken") Ownable() {
         _mint(msg.sender, 100000000000000000000 * 10 ** decimals());
     }
 }
@@ -23,7 +23,7 @@ contract ArtBlockPlatform is Ownable {
     // 1 Ether = 10000 ABX
     // Cost of creating a community = 100 ABX
 
-    constructor(address _ntt) Ownable(msg.sender) {
+    constructor(address _ntt) Ownable() {
         ABXToken _abxToken = new ABXToken();
         abxToken = IERC20(address(_abxToken));
         abxToken.approve(address(this), abxToken.totalSupply());
@@ -336,7 +336,7 @@ contract CommunityToken is ERC20 {
 contract ArtNFT is ERC721, ERC721Burnable, Ownable {
     uint256 private _nextTokenId;
 
-    constructor() ERC721("ArtNFT", "ANFT") Ownable(msg.sender) {}
+    constructor() ERC721("ArtNFT", "ANFT") Ownable() {}
 
     function safeMint(address to) external onlyOwner returns (uint256) {
         uint256 tokenId = ++_nextTokenId;
