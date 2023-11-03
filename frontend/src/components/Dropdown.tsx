@@ -19,7 +19,7 @@ const Dropdown: React.FC<DropdownProps> = ({ title, items }) => {
  return (
     <div className="relative text-left flex items-center justify-center">
       <button
-        className="text-center rounded-r-lg border-b border-r  border-t border-yellow-500 bg-yellow-400 p-4 px-8 font-bold uppercase text-gray-800"
+        className="text-center rounded-lg  border-yellow-500 bg-yellow-400 p-4 px-8 font-bold uppercase text-gray-800"
         type="button"
         onClick={toggleDropdown}
       >

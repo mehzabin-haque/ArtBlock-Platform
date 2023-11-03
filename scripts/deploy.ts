@@ -18,7 +18,7 @@ async function main() {
 
   await greeter.deployed();
 
-  console.log("Greeting contract deployed to: ", greeter.address);
+  console.log("ArtBlock contract deployed to: ", greeter.address);
 
   jsonObject.contractAddress = greeter.address;
   const updatedJsonData = JSON.stringify(jsonObject, null, 2);

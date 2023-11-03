@@ -13,7 +13,7 @@ const Milestone1 = (props: Props) => {
   const [currentValueArtium, setCurrentValueArtium] = useState('')
 
   const { config } = usePrepareContractWrite({
-    address: contractDetails.contractAddress as `0x${string}`,
+    address: contractDetails.ABXTokencontractAddress as `0x${string}`,
     abi: Greeter__factory.abi,
     functionName: 'setGreeting',
     args: [currentValueEther],

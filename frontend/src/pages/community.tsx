@@ -103,12 +103,14 @@ const Community = (props: Props) => {
         
         
         <div className="text-center pt-4">
+        <Link href='community2'>
         <button
           type="submit"
           className="rounded-lg   border-t border-yellow-500 bg-yellow-400 p-4 px-8 font-bold uppercase text-gray-800"
         >
             Submit
           </button>
+        </Link>
         </div>
       </form>
       </div>

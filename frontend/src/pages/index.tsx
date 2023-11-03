@@ -47,11 +47,11 @@ function Main() {
   const [txHash, setTxHash] = useState('')
   console.log("contract Address:")
 
-  console.log(contractDetails.contractAddress)
+  console.log(contractDetails.ABXTokencontractAddress)
   console.log("ABI:")
   console.log(Greeter__factory.abi)
   const { data, isRefetching, refetch } = useContractRead({
-    address: contractDetails.contractAddress as `0x${string}`,
+    address: contractDetails.ABXTokencontractAddress as `0x${string}`,
     abi: Greeter__factory.abi,
     functionName: 'greet',
   })

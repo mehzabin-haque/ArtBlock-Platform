@@ -27,7 +27,7 @@ describe('greeter', () => {
   it("Send ether to payment function", async function () {
     const { greeter, owner } = await loadFixture(deployOnceFixture);
     const payMeTx = await greeter.payMe({
-      value: ethers.utils.parseEther("0.2")
+      value: ethers.utils.parseEther("0.2") 
     });
     await payMeTx.wait();
     const balance = Number(await greeter.connect(owner).provider.getBalance(greeter.address))

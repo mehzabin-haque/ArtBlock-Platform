@@ -2,22 +2,22 @@ import { useState } from 'react';
 
 const Converter = () => {
  const [ether, setether] = useState(1);
- const [abx, setabx] = useState(100);
+ const [abx, setabx] = useState(10000);
 
  const convert = (value: number, to: string) => {
-    const conversionRate = 100; // ether to abx conversion rate
+    const conversionRate = 10000; // ether to abx conversion rate
     const result = to === 'ether' ? value / conversionRate : value * conversionRate;
-    return Math.round(result);
+    return result;
    };
 
  const handleChange = (e: React.ChangeEvent<HTMLInputElement>, to: string) => {
         const value = parseFloat(e.target.value);
         if (to === 'ether') {
             setether(value);
-            setabx(Number(convert(value, 'abx')));
+            setabx(convert(value, 'abx'));
         } else {
             setabx(value);
-            setether(Number(convert(value, 'ether')));
+            setether(convert(value, 'ether'));
         }
  };
 
