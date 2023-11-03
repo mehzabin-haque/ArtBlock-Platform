@@ -46,6 +46,16 @@ contract ArtBlockPlatform is Ownable {
     }
 }
 
+contract CommunityToken is ERC20 {
+
+    constructor(
+        string memory _token,
+        string memory _syntax
+    ) ERC20(_token, _syntax) {
+        _mint(msg.sender, 100000000000000000000 * 10 ** decimals());
+    }
+}
+
 contract ArtNFT is ERC721, ERC721Burnable, Ownable {
     uint256 private _nextTokenId;
 
