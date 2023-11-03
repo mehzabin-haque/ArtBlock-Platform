@@ -1,26 +1,17 @@
 import React, { useState } from 'react'
 import { useContractWrite, useWaitForTransaction, usePrepareContractWrite } from 'wagmi'
-import { Greeter__factory } from '../../typechain'
+import { ArtBlockPlatform__factory, Greeter__factory } from '../../typechain'
 import contractDetails from '../info/contractDetails.json'
 import { IoArrowBackCircleSharp } from 'react-icons/io5'
 import Link from 'next/link'
 import Converter from '../components/Convert'
+import ConnectWallet from 'components/Connect/ConnectWallet'
 
 type Props = {}
 const Milestone1 = (props: Props) => {
 
   const [currentValueEther, setCurrentValueEther] = useState('')
   const [currentValueArtium, setCurrentValueArtium] = useState('')
-
-  const { config } = usePrepareContractWrite({
-    address: contractDetails.ABXTokencontractAddress as `0x${string}`,
-    abi: Greeter__factory.abi,
-    functionName: 'setGreeting',
-    args: [currentValueEther],
-  })
-  const { data, isLoading, isSuccess, write } = useContractWrite(config)
-
-  const { data: receipt, isLoading: isPending } = useWaitForTransaction({ hash: data?.hash })
   
   function handleChange(evt) {
     console.log(evt.currentTarget.value)
@@ -32,11 +23,15 @@ const Milestone1 = (props: Props) => {
 
   return (
     <>
-     {/* <Link href='/'></Link> */}
-     <Link href='/milestone1'>
-    <IoArrowBackCircleSharp className="h-10 w-10 text-black" aria-hidden="true" />
-    </Link>
-     <div className="min-h-screen bg-gray-100 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div className='bg-gray-100'>
+        <h4 className=" text-center text-sm font-medium">demo: ConnectWalletBtn Full</h4>
+        <div className="flex w-full flex-col items-center">
+          <ConnectWallet />
+        </div>
+      </div>
+    
+     <div className=" flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+     
  <div className="max-w-md w-full space-y-8">
     <div>
       <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">

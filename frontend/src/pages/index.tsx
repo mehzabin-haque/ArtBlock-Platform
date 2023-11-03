@@ -12,7 +12,7 @@ import { ConnectButton } from '@rainbow-me/rainbowkit'
 import { useConnectModal, useAccountModal, useChainModal } from '@rainbow-me/rainbowkit'
 import { useContractRead } from 'wagmi'
 // import GreeterArtifact from '../../../artifacts/contracts/Greeter.sol/Greeter.json';
-import { Greeter__factory } from '../../typechain'
+import { ArtBlockPlatform__factory, Greeter__factory } from '../../typechain'
 
 export default function Home() {
   return (
@@ -47,13 +47,13 @@ function Main() {
   const [txHash, setTxHash] = useState('')
   console.log("contract Address:")
 
-  console.log(contractDetails.ABXTokencontractAddress)
+  console.log(contractDetails.ABXContact)
   console.log("ABI:")
   console.log(Greeter__factory.abi)
   const { data, isRefetching, refetch } = useContractRead({
-    address: contractDetails.ABXTokencontractAddress as `0x${string}`,
-    abi: Greeter__factory.abi,
-    functionName: 'greet',
+    address: contractDetails.ABXContact as `0x${string}`,
+    abi: ArtBlockPlatform__factory.abi,
+    functionName: 'getReserve',
   })
   console.log(data)
 
@@ -208,7 +208,8 @@ function Main() {
 
                   <div>
                     <p>{data?.toString()}</p>
-                    <button className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded' disabled={isRefetching} onClick={() => refetch()} style={{ marginLeft: 4 }}>
+                    <button className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded' 
+                    disabled={isRefetching} onClick={() => refetch()} style={{ marginLeft: 4 }}>
                       {isRefetching ? 'loading...' : 'refetch'}
                     </button>
                   </div>

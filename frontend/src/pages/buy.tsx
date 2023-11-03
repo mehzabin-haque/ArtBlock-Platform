@@ -8,11 +8,11 @@ import { stringify } from '../utils/stringify'
 import contractDetails from '../info/contractDetails.json'
 import { useState } from 'react'
 
-export function Buy() {
+export default function Buy() {
   const [currentValue, setCurrentValue] = useState('');
 
   const { config } = usePrepareContractWrite({
-    address: contractDetails.ABXContact as 0x${string},
+    address: contractDetails.ABXContact as `0x${string}`,
     abi: ArtBlockPlatform__factory.abi,
     functionName: 'purchaseABX',
     value: parseEther("0.1")
@@ -28,23 +28,18 @@ export function Buy() {
   return (
     <>
       <form
-        className="m-4 flex"
+        className="m-4 h-screen justify-center items-center flex"
         onSubmit={e => {
           e.preventDefault()
           write()
         }}
       >
-        <input
-          value={currentValue}
-          onChange={evt => handleChange(evt)}
-          className="mr-0 rounded-l-lg border-b border-l border-t border-gray-200 bg-white p-4 text-gray-800"
-          placeholder="Enter amount"
-        />
+        
         <button
           type="submit"
-          className="rounded-r-lg border-b border-r  border-t border-yellow-500 bg-yellow-400 p-4 px-8 font-bold uppercase text-gray-800"
+          className="rounded-lg text-xl border-yellow-500 bg-yellow-400 p-4 px-8 font-bold text-gray-800"
         >
-          Buy Tx
+          Buy ABXToken
         </button>
       </form>
       {isLoading && <div>Check wallet...</div>}
