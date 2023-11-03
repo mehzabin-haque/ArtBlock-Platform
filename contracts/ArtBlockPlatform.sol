@@ -230,7 +230,48 @@ contract Community {
         } 
     }
 
-    
+    struct Auction {
+        Artwork artwork;
+        uint start;
+        uint decrement; //decrement is in minutes
+        uint interval;
+        uint minprice;
+        address artist;
+        address winner;
+        uint startTime;
+    }
+
+    Auction[] public auctions;
+    mapping(uint => Auction) auctionMap;
+    uint public auctionIndex;
+
+    function createDutchAuction(Artwork memory _artwork, uint _start, uint _decrement, uint _interval, uint _minprice) external {
+        Auction storage auction = auctions.push();
+        auction.artwork = _artwork;
+        auction.start = _start;
+        auction.decrement = _decrement * 60; //decrement is in minutes, multiplied by 60 to convert to seconds
+        auction.interval = _interval;
+        auction.minprice = _minprice;
+        auction.artist = msg.sender;
+        auction.startTime = block.timestamp;
+
+        auctionMap[auctionIndex++] = auction;
+    }
+
+    mapping (uint => Artwork) exclusiveArtIndex;
+
+    function placeBid(uint _auctionId) external {
+        Auction storage auction = auctionMap[_auctionId];
+        uint currentPrice = auction.start - (auction.decrement * (block.timestamp - auction.start) / auction.interval);
+
+        require (
+            comToken.transferFrom(msg.sender, auction.artwork.artist, currentPrice), "Community token transfer failed"
+        );
+
+        uint id = exclusiveNTT.safeMint(msg.sender);
+        exclusiveArtIndex[id] = auction.artwork;
+        artNFT.burn(auction.artwork.nftTokenId);
+    }
 }
 
 interface IExclusiveArt is IERC721 {
