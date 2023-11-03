@@ -38,14 +38,26 @@ describe('greeter', () => {
     expect(ethers.utils.formatEther(balance+"") == "0.1");
   });
 
-  it("should transfer the community token to the artist and update the artwork owner", async function () 
-  { const { greeter, owner, otherAccounts } = await loadFixture(deployOnceFixture); 
-  const artist = otherAccounts[0];
-   const auctionId = 1; 
-   const auction = { start: 0, interval: 100, decrement: 1, artwork: { nftTokenId: 1, artworkTokenId: 1, artist: artist.address, }, };
-    await greeter.createDutchAuction(auctionId, auction); 
-    const initialABXBalance = await greeter.getAbxBalance(artist.address);
+  it("should propose art successfully", async () => {
+    const { greeter, owner, otherAccounts } = await loadFixture(deployOnceFixture);
+    const artist = otherAccounts[0];
+    const proposalName = "My Art Proposal";
+    const isExclusive = true;
 
+    // Get the initial balance of the contract
+    const initialContractBalance = await greeter.comToken.balanceOf(yourContract.address);
 
+    // Propose art
+    await yourContract.proposeArt(proposalName, isExclusive, { from: artist });
+
+    // Get the updated balance of the contract
+    const updatedContractBalance = await comToken.balanceOf(yourContract.address);
+
+    // Check that the contract received 100 ComTokens
+    const expectedBalanceIncrease = 100;
+    expect(updatedContractBalance.toNumber()).to.equal(initialContractBalance.toNumber() + expectedBalanceIncrease);
+
+    // Add additional checks for the proposal details and emitted events, if necessary
+  });
 
 });
