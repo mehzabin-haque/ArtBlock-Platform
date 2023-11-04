@@ -1,13 +1,15 @@
-// pages/Community2.tsx
+'use client'
 import React, { useState } from 'react';
 import { IoArrowBackCircleSharp } from 'react-icons/io5';
 import Link from 'next/link';
 import AddRemoveInput from '../components/AddRemoveInput';
 import CommunityCard from '../components/CommunityCard';
 import Converter from 'components/Convert';
+import { useContractWrite, usePrepareContractWrite, useWaitForTransaction } from 'wagmi';
+import contractDetails from '../info/contractDetails.json'
+import { DEX__factory } from '../../typechain';
 
-
-const CommunitySpecific: React.FC = () => {
+export default function CommunitySpecific() {
   const [currentValueEther, setCurrentValueEther] = useState('');
   const [currentValueArtium, setCurrentValueArtium] = useState('');
 
@@ -16,6 +18,16 @@ const CommunitySpecific: React.FC = () => {
     setCurrentValueEther(evt.currentTarget.value);
   }
 
+  const { config } = usePrepareContractWrite({
+    address: contractDetails.DEX as `0x${string}`,
+    abi: DEX__factory.abi,
+    functionName: 'abxToCom',
+    args: [100]
+  })
+  const { data, isLoading, isSuccess, write } = useContractWrite(config)
+
+  const { data: receipt, isLoading: isPending } = useWaitForTransaction({ hash: data?.hash })
+  
   return (
     <>
       <div>
@@ -24,32 +36,23 @@ const CommunitySpecific: React.FC = () => {
         </Link>
         
         <div className="text-center py-10">
-          <h2 className="text-3xl font-extrabold text-gray-900">Boo Community</h2>
-          <p className="mt-4 text-lg text-gray-500">Description of the Community</p>
-        </div>
-
-        <div className='flex items-center justify-center'>
-            <Converter />
+          <h2 className="text-3xl font-extrabold text-gray-900">Tired Community</h2>
+          <p className="mt-4 text-lg text-gray-500">SOOOOOOOOOOOOOOO TIRED</p>
         </div>
 
         <form
           className="m-2 flex items-center justify-center py-6"
-          onSubmit={(e) => {
-            e.preventDefault();
-            // Handle form submission
+          onSubmit={e => {
+            e.preventDefault()
+            write()
           }}
         >
-          <input
-            value={currentValueEther}
-            onChange={(evt) => handleChange(evt)}
-            className="mr-0 rounded-l-lg border-b border-l border-t border-gray-200 bg-white p-4 text-gray-800"
-            placeholder="Enter BooToken Value "
-          />
+          
           <button
             type="submit"
-            className="rounded-r-lg border-b border-r border-t border-yellow-500 bg-yellow-400 p-4 px-8 font-bold uppercase text-gray-800"
+            className="rounded-lg border-yellow-500 bg-yellow-400 p-4 px-8 font-bold uppercase text-gray-800"
           >
-            Exchange Value
+            Swap 100 ABX with SAD
           </button>
         </form>
 
@@ -60,20 +63,22 @@ const CommunitySpecific: React.FC = () => {
             // Handle form submission
           }}
         >
-          <input
-            value={currentValueArtium}
-            onChange={(evt) => handleChange(evt)}
-            className="mr-0 rounded-l-lg border-b border-l border-t border-gray-200 bg-white p-4 text-gray-800"
-            placeholder="Enter ABX Value "
-          />
+          
           <button
             type="submit"
-            className="rounded-r-lg border-b border-r border-t border-yellow-500 bg-yellow-400 p-4 px-8 font-bold uppercase text-gray-800"
+            className="rounded-lg  border-yellow-500 bg-yellow-400 p-4 px-8 font-bold uppercase text-gray-800"
           >
-            Exchange Value
+            Swap 1000 SAD with ABX
           </button>
         </form>
-
+        <Link href="/publishArt">
+        <button
+            type="submit"
+            className="rounded-lg flex items-center justify-center border-yellow-500 bg-yellow-400 p-4 px-8 font-bold uppercase text-gray-800"
+          >
+           Publish a Art
+          </button>
+          </Link>
         <div>
           <AddRemoveInput />
         </div>
@@ -84,4 +89,3 @@ const CommunitySpecific: React.FC = () => {
   );
 };
 
-export default CommunitySpecific;

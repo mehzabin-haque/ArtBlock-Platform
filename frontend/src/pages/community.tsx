@@ -1,3 +1,4 @@
+'use client'
 import React, { FormEvent, useEffect, useState } from 'react'
 import { useContractWrite, useWaitForTransaction, usePrepareContractWrite, useContractRead } from 'wagmi'
 import { ABXToken__factory, ArtBlockPlatform__factory, Greeter__factory } from '../../typechain'
@@ -159,14 +160,14 @@ export default function Community(props: Props) {
         </div>
         
         <div className="text-center pt-4">
-        {/* <Link href='community2'> */}
+        <Link href='community2'>
         <button
           type="submit"
           className="rounded-lg   border-t border-yellow-500 bg-yellow-400 p-4 px-8 font-bold uppercase text-gray-800"
         >
             Submit
           </button>
-        {/* </Link> */}
+        </Link>
         </div>
       </form>
       {isLoading && <div>Check wallet...</div>}

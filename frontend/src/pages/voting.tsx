@@ -1,4 +1,5 @@
-import React from 'react';
+import Link from 'next/link';
+import React, { useState } from 'react';
 import { BiSolidUpArrowCircle, BiSolidDownArrowCircle } from 'react-icons/bi';
 import { IoArrowBackCircleSharp } from 'react-icons/io5';
 
@@ -24,10 +25,22 @@ const demoVotingData = [
 ];
 
 const Voting = () => {
+  const [votingData, setVotingData] = useState(demoVotingData);
+
+  const handleVote = (index, type) => {
+    const updatedData = [...votingData];
+    if (type === 'upvote') {
+      updatedData[index].upvotes += 5;
+    } else if (type === 'downvote') {
+      updatedData[index].downvotes += 10;
+    }
+    setVotingData(updatedData);
+  };
+
   return (
     <>
       <div className='h-screen flex items-center justify-center'>
-        {demoVotingData.map((item, index) => (
+        {votingData.map((item, index) => (
           <div key={index} className="relative flex flex-col text-gray-700 bg-white shadow-md w-96 rounded-xl bg-clip-border m-4">
             <div className="relative h-56 mx-4 -mt-6 overflow-hidden text-white shadow-lg rounded-xl bg-blue-gray-500 bg-clip-border shadow-blue-gray-500/40">
               {/* You can add an image source here */}
@@ -43,6 +56,7 @@ const Voting = () => {
             </div>
             <div className="p-6 pt-0 flex justify-between">
               <button
+                onClick={() => handleVote(index, 'upvote')}
                 className="border-solid border-2 w-2/5 border-black rounded-lg bg-pink-500 py-3 px-6 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-md shadow-pink-500/20 transition-all hover:shadow-lg hover:shadow-pink-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
                 type="button"
                 data-ripple-light="true"
@@ -51,6 +65,7 @@ const Voting = () => {
                 {item.upvotes}
               </button>
               <button
+                onClick={() => handleVote(index, 'downvote')}
                 className="border-solid border-2 w-2/5 border-black rounded-lg bg-pink-500 py-3 px-6 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-md shadow-pink-500/20 transition-all hover:shadow-lg hover:shadow-pink-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
                 type="button"
                 data-ripple-light="true"
@@ -61,6 +76,16 @@ const Voting = () => {
             </div>
           </div>
         ))}
+      </div>
+      <div className='flex items-center justify-center'>
+      <Link href='/createAuction'>
+      <button
+          type="submit"
+          className="rounded-lg  border-yellow-500 bg-yellow-400 p-4 px-8 font-bold uppercase text-gray-800"
+        >
+        Create Auction
+      </button>
+      </Link>
       </div>
     </>
   );

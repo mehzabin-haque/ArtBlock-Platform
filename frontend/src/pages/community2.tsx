@@ -7,8 +7,8 @@ import CommunityCard from '../components/CommunityCard';
 
 const communityData = [
   {
-    title: 'Boo Community',
-    description: 'Community for Boo Token with ghost.<br/> 1 Boo == 100 High',
+    title: 'Tired Community',
+    description: 'SOOOOOOOOOOOOOOO.<br/> 1 Boo == 100 High Token',
   },
   {
     title: 'High Community',

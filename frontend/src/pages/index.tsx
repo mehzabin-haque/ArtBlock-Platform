@@ -13,13 +13,15 @@ import { useConnectModal, useAccountModal, useChainModal } from '@rainbow-me/rai
 import { useContractRead } from 'wagmi'
 // import GreeterArtifact from '../../../artifacts/contracts/Greeter.sol/Greeter.json';
 import { ArtBlockPlatform__factory, Greeter__factory } from '../../typechain'
+import Landing from 'components/Landing'
 
 export default function Home() {
   return (
     <div className={styles.container}>
-      <Header />
-      <Main />
-      <Footer />
+      {/* <Header /> */}
+      {/* <Main /> */}
+      <Landing />
+      {/* <Footer /> */}
     </div>
   )
 }

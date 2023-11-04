@@ -28,7 +28,7 @@ export default function Buy() {
   return (
     <>
       <form
-        className="m-4 h-screen justify-center items-center flex flex-col spacy-y-16"
+        className="m-4 justify-center items-center flex flex-col spacy-y-16"
         onSubmit={e => {
           e.preventDefault()
           write()

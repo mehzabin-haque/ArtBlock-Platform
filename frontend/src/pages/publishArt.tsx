@@ -1,3 +1,4 @@
+'use client'
 import React, { FormEvent, useEffect, useState } from 'react'
 import { useContractWrite, useWaitForTransaction, usePrepareContractWrite } from 'wagmi'
 import { Greeter__factory } from '../../typechain'
@@ -216,7 +217,7 @@ const Publish = (props: Props) => {
         </div>
         {/* <Timer endTime={new Date('2023-11-05T23:59:59').getTime()} /> */}
 
-        
+        <Link href='/voting'>
         <div className="text-center pt-4">
         <button
           type="submit"
@@ -225,6 +226,7 @@ const Publish = (props: Props) => {
             Submit
           </button>
         </div>
+        </Link>
       </form>
       </div>
     </>
