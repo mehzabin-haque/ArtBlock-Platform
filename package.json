@@ -30,13 +30,15 @@
     "@types/react": "^18.2.34",
     "dotenv": "^16.0.1",
     "edit-json-file": "^1.7.0",
+    "fs": "^0.0.1-security",
     "next": "^14.0.1",
     "prettier": "^2.7.1",
     "prettier-plugin-solidity": "^1.0.0-dev.23",
     "react": "^18.2.0",
     "react-icons": "^4.11.0",
     "solhint": "^3.3.7",
-    "solhint-plugin-prettier": "0.0.5"
+    "solhint-plugin-prettier": "0.0.5",
+    "web3.storage": "^4.5.5"
   },
   "scripts": {
     "chain": "npx hardhat node",

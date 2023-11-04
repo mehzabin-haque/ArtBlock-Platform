@@ -6,6 +6,7 @@ import "./CommunityToken.sol";
 import "./ArtNFT.sol";
 import "./DEX.sol";
 
+
 contract Community {
     address public creator;
     string public title;
@@ -59,11 +60,12 @@ contract Community {
 
     Artwork[] public artworks;
     mapping(uint256 => Artwork) public artInfo;
+    mapping(uint => string) public tokenURI;
 
     event ArtVoted(uint256 proposalId, address voter, int256 vote);
     event ArtMinted(uint256 proposalId, uint256 tokenId);
 
-    function mintArt(uint proposalId, string memory _name, uint _price) public {
+    function mintArt(uint proposalId, string memory _name, uint _price, string memory _uri) public {
         require(artProposals[proposalId].winner == true);
         Artwork storage artwork = artworks.push();
         artwork.name = _name;
@@ -71,6 +73,7 @@ contract Community {
         artwork.artist = msg.sender;
         uint256 tokenId = artNFT.safeMint(msg.sender);
         artInfo[tokenId] = artwork;
+        tokenURI[tokenId] = _uri;
     }
 
     function setArtist(uint256 _tokenId) public {

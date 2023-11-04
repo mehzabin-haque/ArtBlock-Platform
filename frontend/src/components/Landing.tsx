@@ -6,9 +6,10 @@ import { IoArrowBackCircleSharp } from 'react-icons/io5'
 import Link from 'next/link'
 import Converter from '../components/Convert'
 import ConnectWallet from 'components/Connect/ConnectWallet'
+import Buy from './Buy'
 
 type Props = {}
-const Milestone1 = (props: Props) => {
+const Landing = (props: Props) => {
 
   const [currentValueEther, setCurrentValueEther] = useState('')
   const [currentValueArtium, setCurrentValueArtium] = useState('')
@@ -39,18 +40,11 @@ const Milestone1 = (props: Props) => {
       </h2>
     </div>
 
-    <Link href='/buy'>
-    <button
-          type="submit"
-          className="rounded-lg flex items-center justify-center border-yellow-500 bg-yellow-400 p-4 px-8 font-bold uppercase text-gray-800"
-        >
-         Buy ABX
-        </button>
-        </Link>
+    <Buy />
         <Link href='/community'>
         <button
           type="submit"
-          className="rounded-lg flex items-center justify-center border-yellow-500 bg-yellow-400 p-4 px-8 font-bold uppercase text-gray-800"
+          className="rounded-lg m-4 justify-center items-center flex flex-col spacy-y-16 border-yellow-500 bg-yellow-400 p-4 px-8 font-bold uppercase text-gray-800"
         >
          Create Community
         </button>
@@ -62,4 +56,4 @@ const Milestone1 = (props: Props) => {
   );
 }
 
-export default Milestone1;
+export default Landing;

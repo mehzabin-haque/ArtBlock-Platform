@@ -1,12 +1,28 @@
-# Hardhat Full Stack Dapp Boilerplate
+# ArtBlock Platform
 
-A fullstack hardhat and wagmi based dapp boilerplate ready to hack 🙌
+Platform ArtBlock is a way to create a creator based community that focuses on specific type of art. These communities are a form of DAO.
+
+## Feautures  
+
+1. Users can purchase platform native ERC20 ABX Tokens with a fixed price of ethers.
+2. User can create new communities by speending ABX Token.
+3. Each community will have their own native ERC20 token which can be exchanged with ABX Token.
+4. Each community will have a Decentralized EXchange (DEX) which will have two assets - ABX Token & the community native token.
+5. The liquidity pool follows Constant Product Automated Market Maker (CPAMM). The price curve for these AMMs abides by the x*y=k equation, where X and Y are the quantities of assets 1 and 2, and K is a constant.
+6. Creators can publish their art in respective communities for approval by staking certain community native tokens. The arts can be of two category - exclusive & general.
+7. Community members can be vote on the approval of the product with options for upvote & downvote. The voting is weighted.
+8. Artists can host Dutch auctions for approved exclusive items.
+9. Auctioned exclusive arts will be minted as Non-Transferable Token.
+10. Approved general arts will be minted as NFT.
+11. There is an ArtBlock marketplace where creators can sell their general art products in community native tokens & current owners can resell general arts.
+12. There is a dynamic royalty system for original creators allowing them to set a percentage for each subsequent rsell. 
 
 ## Used Technology
  - [👷🏽‍♂️ Hardhat](https://www.rainbowkit.com/)
  - [🌈 RainbowKit](https://hardhat.org/)
  - [➬ WAGMI](https://wagmi.sh/)
  - [🌐 Next JS](https://nextjs.org/)
+ - [🗺 Web3.storage]
  - [🗺 Etherscan](https://etherscan.io/)
  - [🕹 Typechain](https://github.com/dethcrypto/TypeChain)
  - [TailwindCSS](https://tailwindcss.com) – Utility-first CSS framework for rapid UI development
@@ -72,7 +88,7 @@ npm run deploy:<network>
 ```
 npx hardhat verify --network sepolia <YOUR_CONTRACT_ADDRESS> <Paramaters>
 ```
-For example for `Greeter` contract:
+For example for `ArtBlockPlatform` contract:
 ```
 npx hardhat verify --network sepolia 0xAECD7dFD9d5ED08EA916B052D90A75366B963A61 "Hello world"
 ```
