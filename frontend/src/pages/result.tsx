@@ -7,7 +7,8 @@ import { useState } from 'react'
 const Result: NextPage = () => {
     const router = useRouter();
     const result = router.query;
-    const url = `https://bafybeihabduj5qzi2nsnb6v7dnozbqqzvzawrikk4yj5q3qotumyme37aq.ipfs.dweb.link/test.jpg`;
+    const url = (result.url as string);
+    // const url = `https://${id}.ipfs.dweb.link/test.jpg`;
     const [popover, setPopover] = useState<boolean>(false);
     const copyClipboard = () => {
         window.navigator.clipboard.writeText(url);
