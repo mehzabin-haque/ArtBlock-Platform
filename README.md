@@ -88,9 +88,14 @@ npm run deploy:<network>
 ```
 npx hardhat verify --network sepolia <YOUR_CONTRACT_ADDRESS> <Paramaters>
 ```
+For example for `ArtBlockPlatform` contract:
+```
+npx hardhat verify --network sepolia 0xAECD7dFD9d5ED08EA916B052D90A75366B963A61 "Hello world"
+```
 
 ## Some key code snippets
 ### Weighted Voting
+The voting weight is determined by the amount of community native tokens held by the voter.
 ```solidity
     function upvote(uint proposalId) external {
         ArtProposal storage _artProposal = artProposals[proposalId];
@@ -102,6 +107,7 @@ npx hardhat verify --network sepolia <YOUR_CONTRACT_ADDRESS> <Paramaters>
 ```
 
 ### Dutch Auction
+A Dutch auction initially offers an item at a price in excess of the amount the seller expects to receive. The price lowers in steps until a bidder accepts the current price. That bidder wins the auction and pays that price for the item.
 ```solidity
     function createDutchAuction(Artwork memory _artwork, uint _start, uint _decrement, uint _interval, uint _minprice) external {
         Auction storage auction = auctions.push();
@@ -133,6 +139,7 @@ npx hardhat verify --network sepolia <YOUR_CONTRACT_ADDRESS> <Paramaters>
 ```
 
 ### Non-Transferrable Exclusive Auctioned Art
+Before transferring a minted NFT, it will check that their is no current owner. If there is a current owner, transfer will not occur.
 ```solidity
     function _beforeTokenTransfer(
         address from,
@@ -224,8 +231,5 @@ npx hardhat verify --network sepolia <YOUR_CONTRACT_ADDRESS> <Paramaters>
 
 
 
-For example for `ArtBlockPlatform` contract:
-```
-npx hardhat verify --network sepolia 0xAECD7dFD9d5ED08EA916B052D90A75366B963A61 "Hello world"
-```
+
 
