@@ -88,6 +88,142 @@ npm run deploy:<network>
 ```
 npx hardhat verify --network sepolia <YOUR_CONTRACT_ADDRESS> <Paramaters>
 ```
+
+## Some key code snippets
+### Weighted Voting
+```solidity
+    function upvote(uint proposalId) external {
+        ArtProposal storage _artProposal = artProposals[proposalId];
+        require(_artProposal.closingTime < block.timestamp);
+        
+        uint weight = (1 ether * comToken.balanceOf(msg.sender) / comToken.totalSupply());
+        _artProposal.upvotes += weight;
+    }
+```
+
+### Dutch Auction
+```solidity
+    function createDutchAuction(Artwork memory _artwork, uint _start, uint _decrement, uint _interval, uint _minprice) external {
+        Auction storage auction = auctions.push();
+        auction.artwork = _artwork;
+        auction.start = _start;
+        auction.decrement = _decrement * 60; //decrement is in minutes, multiplied by 60 to convert to seconds
+        auction.interval = _interval;
+        auction.minprice = _minprice;
+        auction.artist = msg.sender;
+        auction.startTime = block.timestamp;
+
+        auctionMap[auctionIndex++] = auction;
+    }
+
+    mapping (uint => Artwork) exclusiveArtIndex;
+
+    function placeBid(uint _auctionId) external {
+        Auction storage auction = auctionMap[_auctionId];
+        uint currentPrice = auction.start - (auction.decrement * (block.timestamp - auction.start) / auction.interval);
+
+        require (
+            comToken.transferFrom(msg.sender, auction.artwork.artist, currentPrice)
+        );
+
+        uint id = exclusiveNTT.safeMint(msg.sender);
+        exclusiveArtIndex[id] = auction.artwork;
+        artNFT.burn(auction.artwork.nftTokenId);
+    }
+```
+
+### Non-Transferrable Exclusive Auctioned Art
+```solidity
+    function _beforeTokenTransfer(
+        address from,
+        address to,
+        uint256 tokenId,
+        uint256 batchSize
+    ) internal virtual override {
+        require(from == address(0), "Err: token transfer is BLOCKED");
+        super._beforeTokenTransfer(from, to, tokenId, batchSize);
+    }
+```
+
+### Automated Dynamic Royalty
+```solidity
+   function buyFromMarket (uint _id) external {
+        Sellpost storage _sellpost = sellposts[getSellpost(_id)];
+        require(comToken.transferFrom(msg.sender, artNFT.ownerOf(_sellpost.artwork.nftTokenId), _sellpost.price - (_sellpost.price * _sellpost.artwork.royalty / 100 )), "Community Token transfer to owner 
+         failed!");
+        require(comToken.transferFrom(msg.sender, _sellpost.artwork.artist, _sellpost.price * _sellpost.artwork.royalty / 100 ), "Community Token transfer to artist failed!");
+
+        _sellpost.isSold = true;
+    }
+```
+
+### Adding Liquidity in DEX
+```solidity
+    function addLiquidity(uint256 _abxAmount, uint256 _comAmount)
+        external
+        returns (uint256 shares)
+    {
+        uint256 abxReserve = getAbxReserve();
+        uint256 comReserve = getComReserve();
+
+        if (abxReserve > 0 || comReserve > 0) {
+            require(
+                abxReserve * _comAmount == comReserve * _abxAmount
+            );
+        }
+
+        abxToken.transferFrom(msg.sender, address(this), _abxAmount);
+        comToken.transferFrom(msg.sender, address(this), _comAmount);
+
+        if (totalSupply == 0) {
+            shares = _sqrt(_abxAmount * _comAmount);
+        } else {
+            shares = _min(
+                (_abxAmount * totalSupply) / abxReserve,
+                (_comAmount * totalSupply) / comReserve
+            );
+        }
+        require(shares > 0);
+        _mint(msg.sender, shares);
+    }
+```
+
+### Swapping in DEX
+```solidity
+    function swap(address _tokenIn, uint256 _amountIn)
+        internal
+        returns (uint256 amountOut)
+    {
+        require(
+            _tokenIn == address(abxToken) || _tokenIn == address(comToken)
+        );
+        require(_amountIn > 0, "amount in = 0");
+
+        bool isAbxToken = _tokenIn == address(abxToken);
+        (
+            IERC20 tokenIn,
+            IERC20 tokenOut,
+            uint256 reserveIn,
+            uint256 reserveOut
+        ) = isAbxToken
+                ? (abxToken, comToken, getAbxReserve(), getComReserve())
+                : (comToken, abxToken, getComReserve(), getAbxReserve());
+
+        tokenIn.transferFrom(msg.sender, address(this), _amountIn);
+
+        uint256 amountInWithFee = (_amountIn * 997) / 1000;
+        amountOut =
+            (reserveOut * amountInWithFee) /
+            (reserveIn + amountInWithFee);
+
+        tokenOut.transfer(msg.sender, amountOut);
+    }
+```
+
+
+
+
+
 For example for `ArtBlockPlatform` contract:
 ```
 npx hardhat verify --network sepolia 0xAECD7dFD9d5ED08EA916B052D90A75366B963A61 "Hello world"
