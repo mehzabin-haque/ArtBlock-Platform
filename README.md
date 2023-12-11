@@ -15,7 +15,7 @@ Platform ArtBlock is a way to create a creator based community that focuses on s
 9. Auctioned exclusive arts will be minted as Non-Transferable Token.
 10. Approved general arts will be minted as NFT.
 11. There is an ArtBlock marketplace where creators can sell their general art products in community native tokens & current owners can resell general arts.
-12. There is a dynamic royalty system for original creators allowing them to set a percentage for each subsequent rsell. 
+12. There is a dynamic royalty system for original creators allowing them to set a percentage for each subsequent resell. 
 
 ## Used Technology
  - [👷🏽‍♂️ Hardhat](https://www.rainbowkit.com/)
